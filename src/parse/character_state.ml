@@ -50,7 +50,7 @@ struct
         s.indent
 
 
-    let next (c: char) (s: t): t =
+    let next (c: string) (s: t): t =
         {s with
          pos =
              Position.next c s.pos;

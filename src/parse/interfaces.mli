@@ -199,7 +199,7 @@ sig
      *)
 
     include MINIMAL_PARSER
-        with type token = char
+        with type token = string
          and type expect = string * Indent.expectation option
     (** @inline *)
 

@@ -31,7 +31,7 @@ let%test _ =
     &&
     Parser.column p = 0
     &&
-    Parser.lookaheads p = ([|','|], false)
+    Parser.lookaheads p = ([|","|], false)
 
 
 let%test _ =
@@ -41,7 +41,7 @@ let%test _ =
     &&
     Parser.column p = 1
     &&
-    Parser.lookaheads p = ([|'b'|], false)
+    Parser.lookaheads p = ([|"b"|], false)
 
 
 let%test _ =

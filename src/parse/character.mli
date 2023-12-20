@@ -23,7 +23,7 @@ sig
     module Parser:
     sig
         include Interfaces.PARSER
-            with type token    = char
+            with type token    = string
              and type final    = Final.t
              and type expect   = string * Indent.expectation option
              and type semantic = Semantic.t
@@ -199,7 +199,13 @@ sig
 
 
     val charp: (char -> bool) -> string -> char t
-    (** [charp p expect] Parse a character which satisfies the predicate [p].
+    (** [charp p expect] Parse a unibyte character which satisfies the predicate [p].  Fails if the next UTF-8 character is multibyte.
+
+        In case of failure, report the failed expectation [expect].
+    *)
+
+    val ucharp: (string -> bool) -> string -> string t
+    (** [ucharp p expect] Parse a UTF-8 character which satisfies the predicate [p].
 
         In case of failure, report the failed expectation [expect].
     *)
@@ -212,7 +218,11 @@ sig
 
 
     val char: char -> char t
-    (** [char c] Parse the character [c]. *)
+    (** [char c] Parse the unibyte character [c]. *)
+
+
+    val uchar: string -> string t
+    (** [uchar c] Parse the UTF-8 character [c]. *)
 
 
     val one_of_chars: string -> string -> char t
@@ -250,8 +260,16 @@ sig
     val word: (char -> bool) -> (char -> bool) -> string -> string t
     (** [word first inner error]
 
-        Parse a word which starts with a character satisfying the predicate
-        [first] followed by zero or more characters satisfying the predicate
+        Parse a word which starts with a unibyte character satisfying the predicate
+        [first] followed by zero or more unibyte characters satisfying the predicate
+        [inner]. In case of failure add the expectation [error].
+    *)
+
+    val uword: (string -> bool) -> (string -> bool) -> string -> string t
+    (** [uword first inner error]
+
+        Parse a word which starts with a UTF-8 character satisfying the predicate
+        [first] followed by zero or more UTF-8 characters satisfying the predicate
         [inner]. In case of failure add the expectation [error].
     *)
 

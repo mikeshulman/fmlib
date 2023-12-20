@@ -283,10 +283,10 @@ let one_line_marker (is_last: bool) (p: t): Pretty.doc =
     )
 
 
-let receive_char (is_last: bool) (c: char) (p: t): t =
+let receive_char (is_last: bool) (c: string) (p: t): t =
     let in_range = is_in_range p
     in
-    if c = '\n' then
+    if c = "\n" then
         let open Pretty in
         let doc =
             if in_range then
@@ -314,7 +314,7 @@ let receive_char (is_last: bool) (c: char) (p: t): t =
             p with
             line =
                 if in_range then
-                    p.line ^ String.make 1 c
+                    p.line ^ c
                 else
                     p.line;
         }
@@ -322,12 +322,12 @@ let receive_char (is_last: bool) (c: char) (p: t): t =
 
 
 
-let put: char -> t -> t =
+let put: string -> t -> t =
     receive_char false
 
 
 let put_end: t -> t =
-    receive_char true '\n'
+    receive_char true "\n"
 
 
 let document (p: t): Pretty.doc =

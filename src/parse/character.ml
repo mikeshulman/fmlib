@@ -10,7 +10,7 @@ module Make
 struct
     module Token =
       struct
-        type t = char
+        type t = string
       end
 
 
@@ -174,7 +174,7 @@ struct
 
 
     let step
-        (f: State.t -> char -> ('a, string) result)
+        (f: State.t -> string -> ('a, string) result)
         (e: string)
         :
         'a t
@@ -233,8 +233,8 @@ struct
         Basic.expect_end (fun _ -> error, None) a
 
 
-    let char (expected: char): char t =
-        let error () = String.(one '\'' ^ one expected ^ one '\'')
+    let uchar (expected: string): string t =
+        let error () = String.(one '\'' ^ expected ^ one '\'')
         in
         step
             (fun _ actual ->
@@ -247,7 +247,12 @@ struct
             (error ())
 
 
-    let charp (f: char -> bool) (e: string): char t =
+    let char (expected: char): char t =
+        let* str = uchar (String.one expected) in
+        return str.[0]
+
+
+    let ucharp (f: string -> bool) (e: string): string t =
         step
             (fun _ c ->
                  if f c then
@@ -255,6 +260,11 @@ struct
                  else
                      Error e)
             e
+
+    let charp (f: char -> bool) (e: string): char t =
+        let* str = ucharp (fun str -> String.length str = 1 && f str.[0]) e in
+        return str.[0]
+
 
 
     let range (c1: char) (c2: char): char t =
@@ -294,19 +304,29 @@ struct
         return Char.(code d - code '0')
 
 
+    let uword
+            (first: string -> bool)
+            (inner: string -> bool)
+            (expect: string)
+        : string t
+        =
+        let* c0 = ucharp first expect in
+        zero_or_more_fold_left
+            c0
+            (fun str c -> str ^ c |> return)
+            (ucharp inner expect)
+        |> no_expectations
+
     let word
             (first: char -> bool)
             (inner: char -> bool)
             (expect: string)
         : string t
         =
-        let* c0 = charp first expect in
-        zero_or_more_fold_left
-            (String.make 1 c0)
-            (fun str c -> str ^ String.make 1 c |> return)
-            (charp inner expect)
-        |> no_expectations
-
+        uword
+            (fun c -> String.length c = 1 && first c.[0])
+            (fun c -> String.length c = 1 && inner c.[0])
+            expect
 
     let hex_lowercase: int t =
         let* c = range 'a' 'f' in

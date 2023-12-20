@@ -56,7 +56,7 @@ struct
     let needs_more (r: t): bool =
         Source_extractor.needs_more r.extractor
 
-    let put (c: char) (r: t): t =
+    let put (c: string) (r: t): t =
         {r with
          extractor = Source_extractor.put c r.extractor
         }

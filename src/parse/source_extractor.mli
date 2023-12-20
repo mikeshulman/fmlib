@@ -29,7 +29,7 @@ val run_on_channel: in_channel -> t -> t
 
 val needs_more: t -> bool
 
-val put: char -> t -> t
+val put: string -> t -> t
 
 val put_end: t -> t
 

@@ -1,5 +1,5 @@
 val string:
-    ('a -> bool) -> (char -> 'a -> 'a) -> ('a -> 'a) -> string -> 'a -> 'a
+    ('a -> bool) -> (string -> 'a -> 'a) -> ('a -> 'a) -> string -> 'a -> 'a
 
 val channel:
-    ('a -> bool) -> (char -> 'a -> 'a) -> ('a -> 'a) -> in_channel -> 'a -> 'a
+    ('a -> bool) -> (string -> 'a -> 'a) -> ('a -> 'a) -> in_channel -> 'a -> 'a

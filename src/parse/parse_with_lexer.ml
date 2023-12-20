@@ -18,7 +18,7 @@ module Make
             and type semantic = Semantic.t)
 =
 struct
-    type token    = char
+    type token    = string
     type item     = token
     type final    = Final.t
     type expect   = string * Indent.expectation option
@@ -123,7 +123,7 @@ struct
             p
 
 
-    let put (c: char) (p: t): t =
+    let put (c: string) (p: t): t =
         check_token {p with lex = Lex.put c p.lex}
 
     let put_end (p: t): t =

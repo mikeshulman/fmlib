@@ -45,8 +45,8 @@ let start: t = {
 
 
 
-let next (c: char) (p: t): t =
-    if c = '\n' then
+let next (c: string) (p: t): t =
+    if c = "\n" then
         {
             line     = p.line + 1;
             byte_bol = p.byte_bol + p.byte_col + 1;
@@ -57,14 +57,14 @@ let next (c: char) (p: t): t =
         {
             p with
             byte_col   =
-                p.byte_col + 1;
+                p.byte_col + String.length c;
             correction =
-                if c = '\t' then
+                if c = "\t" then
                     p.correction + 3
-                else if c < ' ' then
+                else if c.[0] < ' ' then
                     p.correction - 1
                 else
-                    p.correction
+                    p.correction + 1 - String.length c
         }
 
 

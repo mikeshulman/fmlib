@@ -45,7 +45,7 @@ end
 module type LEXER =
 sig
     include MINIMAL_PARSER
-        with type token = char
+        with type token = string
          and type expect = string * Indent.expectation option
 
     val has_consumed_end: t -> bool

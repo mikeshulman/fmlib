@@ -33,7 +33,7 @@ module Make
 sig
     (** The type of tokens is char.
         {[
-            type token = char
+            type token = string
         ]}
 
         Type of syntax expectations:
@@ -44,7 +44,7 @@ sig
 
 
     include Interfaces.NORMAL_PARSER
-        with type token = char
+        with type token = string
         and  type final = Final.t
         and  type expect = string * Indent.expectation option
         and  type semantic = Semantic.t

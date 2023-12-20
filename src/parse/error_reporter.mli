@@ -176,7 +176,7 @@ sig
     val needs_more: t -> bool
     (** Does the reporter need more characters from the source file? *)
 
-    val put: char -> t -> t
+    val put: string -> t -> t
     (** Put a character from the source file into the reporter. *)
 
     val put_end: t -> t

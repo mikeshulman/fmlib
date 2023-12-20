@@ -106,7 +106,7 @@ val byte_offset: t -> int
 (** {1 Increment position} *)
 
 
-val next: char -> t -> t
+val next: string -> t -> t
 (** [next next_char pos]: Advance the position by using the next character. If
     the next character is a newline, then the line number is increment and the
     column number is reset to 0.
